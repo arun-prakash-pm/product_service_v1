@@ -1,15 +1,15 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'maven:3.9.9-eclipse-temurin-17'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
 
     environment {
         APP_NAME = "product-service"
         APP_PORT = "8081"
         IMAGE_NAME = "product-service"
-    }
-
-    tools {
-        maven 'Maven3'
-        jdk 'JDK17'
     }
 
     stages {
