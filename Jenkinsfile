@@ -45,10 +45,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ ${APP_NAME} deployed successfully!"
+            echo "SUCCESS: ${APP_NAME} deployed"
         }
         failure {
-            echo "❌ Build failed. Check logs."
+            echo "FAILED: Check logs"
         }
     }
 }
