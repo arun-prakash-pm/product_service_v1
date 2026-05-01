@@ -7,13 +7,12 @@ pipeline {
         IMAGE_NAME = "product-service"
     }
 
-    stages {
+    tools {
+        maven 'Maven3'
+        jdk 'JDK17'
+    }
 
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/your-repo-url.git'
-            }
-        }
+    stages {
 
         stage('Build') {
             steps {
@@ -23,16 +22,16 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t ${IMAGE_NAME} .'
+                sh 'docker build -t ${IMAGE_NAME}:latest .'
             }
         }
 
-        stage('Run Container') {
+        stage('Deploy') {
             steps {
                 sh '''
                 docker stop ${APP_NAME} || true
                 docker rm ${APP_NAME} || true
-                docker run -d -p ${APP_PORT}:${APP_PORT} --name ${APP_NAME} ${IMAGE_NAME}
+                docker run -d -p ${APP_PORT}:${APP_PORT} --name ${APP_NAME} ${IMAGE_NAME}:latest
                 '''
             }
         }
