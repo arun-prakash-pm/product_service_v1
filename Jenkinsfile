@@ -20,6 +20,12 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
         stage('Docker Build') {
             steps {
                 sh 'docker build -t ${IMAGE_NAME}:latest .'
@@ -34,6 +40,15 @@ pipeline {
                 docker run -d -p ${APP_PORT}:${APP_PORT} --name ${APP_NAME} ${IMAGE_NAME}:latest
                 '''
             }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ ${APP_NAME} deployed successfully!"
+        }
+        failure {
+            echo "❌ Build failed. Check logs."
         }
     }
 }
